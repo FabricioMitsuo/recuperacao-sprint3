@@ -1,4 +1,6 @@
 //estilização
+import { useState } from "react";
+import api from "../../utils/api";
 import "./style.css";
 
 //hooks
@@ -10,19 +12,56 @@ import "./style.css";
 
 function CadastroBolo() {
 
+    // setter => Definir valor
+    const [ nome, setNome ] = useState<string>("");
+    const [ valor, setValor] = useState<number>(0)
+    const [ imagem, setImagem ] = useState<any>();
+    const [ingredientes, setIngredientes ] = useState<string>("");
+    const [ cobertura, setCobertura ] = useState<string>("")
+
+    // hoisting
+    function verificarCampoUpload(event: any) {
+        setImagem(event.target.files[0])
+
+    }
+
+    const cadastrarBolo = (event: any) => {
+        event.preventDefault()
+
+        const formData = new FormData()
+
+        formData.append("nome", nome)
+        formData.append("valor", valor.toString())
+        formData.append("user_img", imagem)
+        formData.append("ingredientes", ingredientes)
+        formData.append("cobertura", cobertura )
+
+        api.post("bolos", formData).then( response => {
+            console.log(response)
+            alert("Bolo criado com sucesso!!")
+
+        }).catch( error => {
+            console.log("Erro na criacao: " + error);
+        })
+
+ 
+
+    }
+
 
     return (
         <main>
             <section className="cadastro">
                 <div className="glass">
                     <h1>Cadastro de Bolos</h1>
-                    <form method="POST">
+                    <form method="POST" onSubmit={cadastrarBolo}>
                         <div>
                             <label htmlFor="nome">Nome do Bolo:</label>
                             <input
                                 className="input_estilo"
                                 name="nome"
                                 type="text"
+                                onChange={ event => setNome(event.target.value) }
                             />
                         </div>
 
@@ -33,6 +72,7 @@ function CadastroBolo() {
                                 name="valor"
                                 type="text"
                                 id="valor"
+                                onChange={ event => setValor( parseFloat(event.target.value) )}
                             />
                         </div>
 
@@ -43,6 +83,7 @@ function CadastroBolo() {
                                 name="imagem"
                                 type="file"
                                 id="imagem"
+                                onChange={ verificarCampoUpload }
                             />
                         </div>
 
@@ -52,6 +93,7 @@ function CadastroBolo() {
                                 className="input_estilo"
                                 name="ingredientes"
                                 id="ingredientes"
+                                onChange={ event => setIngredientes(event.target.value) }
                             >
                             </textarea>
                         </div>
@@ -61,6 +103,7 @@ function CadastroBolo() {
                                 className="input_estilo"
                                 name="cobertura"
                                 id="cobertura"
+                                onChange={ event => setCobertura(event.target.value) }
                             >
                             </textarea>
                         </div>
@@ -71,6 +114,6 @@ function CadastroBolo() {
             </section>
         </main>
     );
-};
+}
 
 export default CadastroBolo;

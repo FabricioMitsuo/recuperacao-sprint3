@@ -7,6 +7,16 @@
       "valor": "55",
       "user_img": "1699381362195.png",
       "id": 1
+    },
+          
+    {
+      "nome": "bolo mulango",
+      "valor": "60",
+      "ingredientes": "massa com morango",
+      "cobertura": "farinha, trigo , creme , chantilly, soja",
+      "user_img": "1700328586157.png",
+      "id": 6
     }
+   
   ]
 }
